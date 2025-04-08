@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 import { SearchInput, SegmentedControl } from '@livechat/design-system-react-components';
 import { CannedResponseItem } from './CannedResponseItem';
 import { EmptyState } from '../empty-state/EmptyState';
@@ -8,8 +8,7 @@ import { CANNED_RESPONSES_BUTTONS } from '../canned-responses-buttons/configurat
 import * as styles from './styles';
 
 export const CannedResponses: FC = () => {
-  const { cannedResponses, setFilter, filter, isEmpty } = useCannedResponses();
-  const [search, setSearch] = useState('');
+  const { cannedResponses, isEmpty, filter, search, setFilter, setSearch } = useCannedResponses();
 
   return (
     <div className={styles.wrapper}>
