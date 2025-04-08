@@ -2,6 +2,15 @@ import { css, keyframes } from '@emotion/css';
 import { DesignToken } from '@livechat/design-system-react-components';
 
 const maxWidth = '100%';
+const toPx = (value: number): string => `${value}px`;
+
+const VirtuosoViewportOffsets = {
+  ActionBarHeight: 64,
+  ActionBarMarginTop: 32,
+  ListMarginTop: 16,
+} as const;
+
+export const VIRTUOSO_LIST_HEIGHT = `calc(100vh - ${toPx(Object.values(VirtuosoViewportOffsets).reduce((a, b) => a + b, 0))})`;
 
 const highlight = keyframes`
   from {
@@ -24,7 +33,8 @@ export const actionBar = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
+  margin-top: ${toPx(VirtuosoViewportOffsets.ActionBarMarginTop)};
+  height: ${toPx(VirtuosoViewportOffsets.ActionBarHeight)};
   max-width: ${maxWidth};
 
   .lc-search-bar__container {
@@ -203,7 +213,7 @@ export const wrapper = css`
 `;
 
 export const list = css`
-  margin-top: 16px;
+  margin-top: ${toPx(VirtuosoViewportOffsets.ListMarginTop)};
   position: relative;
   height: 100%;
   min-height: 400px;

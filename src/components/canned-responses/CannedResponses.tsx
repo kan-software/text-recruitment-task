@@ -1,4 +1,5 @@
 import { type FC } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 import { SearchInput, SegmentedControl } from '@livechat/design-system-react-components';
 import { CannedResponseItem } from './CannedResponseItem';
 import { EmptyState } from '../empty-state/EmptyState';
@@ -43,11 +44,11 @@ export const CannedResponses: FC = () => {
         )}
 
         {!isEmpty && (
-          <>
-            {cannedResponses.map((item) => (
-              <CannedResponseItem key={item.id} item={item} onSelectTag={setSearch} />
-            ))}
-          </>
+          <Virtuoso
+            style={{ height: styles.VIRTUOSO_LIST_HEIGHT }}
+            totalCount={cannedResponses.length}
+            itemContent={(index) => <CannedResponseItem item={cannedResponses[index]} onSelectTag={setSearch} />}
+          />
         )}
       </div>
     </div>
