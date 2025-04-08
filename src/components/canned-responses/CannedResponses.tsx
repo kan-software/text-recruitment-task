@@ -4,11 +4,11 @@ import { CannedResponseItem } from './CannedResponseItem';
 import { EmptyState } from '../empty-state/EmptyState';
 import { CannedResponseFilterType } from '../../types/filter-type';
 import { useCannedResponses } from '../../hooks/use-canned-responses';
-import { CANNED_RESPONSES_BUTTONS } from '../canned-responses-buttons/configuration';
 import * as styles from './styles';
 
 export const CannedResponses: FC = () => {
-  const { cannedResponses, isEmpty, filter, search, setFilter, setSearch } = useCannedResponses();
+  const { cannedResponses, isEmpty, filter, search, cannedResponsesButtons, setFilter, setSearch } =
+    useCannedResponses();
 
   return (
     <div className={styles.wrapper}>
@@ -22,7 +22,7 @@ export const CannedResponses: FC = () => {
                   initialId="all"
                   currentId={filter}
                   className={styles.segmentedControlButton}
-                  buttons={CANNED_RESPONSES_BUTTONS}
+                  buttons={cannedResponsesButtons}
                   onButtonClick={(id) => setFilter(id as CannedResponseFilterType)}
                 />
               </>

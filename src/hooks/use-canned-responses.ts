@@ -3,30 +3,24 @@ import { useSelector } from 'react-redux';
 import type { CannedResponseFilterType } from '../types/filter-type';
 import { CannedResponse } from '../types/canned-responses';
 import { getCannedResponses } from '../store/selectors';
-import { privacyFilterCannedResponses } from './helpers/privacy-filter-canned-responses';
-import { searchCannedResponses } from './helpers/search-canned-responses';
 import { useDebounce } from './use-debounce';
+import {
+  groupCannedResponsesByFilterType,
+  searchCannedResponses,
+  sortCannedResponses,
+} from './helpers/canned-responses-utils';
+import { SegmentedControlProps } from '@livechat/design-system-react-components';
+import { getCannedResponsesButtons } from './helpers/canned-responses-buttons-utils';
 
 interface UseCannedResponses {
   cannedResponses: CannedResponse[];
   isEmpty: boolean;
   filter: CannedResponseFilterType;
   search: string;
+  cannedResponsesButtons: SegmentedControlProps['buttons'];
   setFilter: Dispatch<SetStateAction<CannedResponseFilterType>>;
   setSearch: Dispatch<SetStateAction<string>>;
 }
-
-const getFilteredAndSortedResponses = (
-  responses: CannedResponse[],
-  filter: CannedResponseFilterType,
-  search: string,
-): CannedResponse[] => {
-  if (responses.length === 0) return [];
-
-  return searchCannedResponses(privacyFilterCannedResponses(responses, filter), search).sort(
-    (first, second) => second.modificationTimestamp - first.modificationTimestamp,
-  );
-};
 
 export const useCannedResponses = (): UseCannedResponses => {
   const [filter, setFilter] = useState<CannedResponseFilterType>('all');
@@ -34,13 +28,21 @@ export const useCannedResponses = (): UseCannedResponses => {
   const debouncedSearch = useDebounce(search);
   const cannedResponses = useSelector(getCannedResponses);
   const isEmpty = cannedResponses.length === 0;
-  const filteredCannedResponses = useMemo(
-    () => getFilteredAndSortedResponses(cannedResponses, filter, debouncedSearch),
-    [cannedResponses, filter, debouncedSearch],
+
+  const searchedResponsesByFilter = useMemo(() => {
+    const sortedResponses = sortCannedResponses(cannedResponses);
+    const searchedResponses = searchCannedResponses(sortedResponses, debouncedSearch);
+    return groupCannedResponsesByFilterType(searchedResponses);
+  }, [cannedResponses, debouncedSearch]);
+
+  const cannedResponsesButtons = useMemo(
+    () => getCannedResponsesButtons(searchedResponsesByFilter),
+    [searchedResponsesByFilter],
   );
 
   return {
-    cannedResponses: filteredCannedResponses,
+    cannedResponses: searchedResponsesByFilter[filter],
+    cannedResponsesButtons,
     isEmpty,
     filter,
     search,
