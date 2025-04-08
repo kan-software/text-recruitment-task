@@ -11,9 +11,9 @@ export const searchCannedResponses = (cannedResponses: CannedResponse[], search:
   const lowerSearchText = search.toLowerCase();
   return cannedResponses.filter(
     (cannedResponse) =>
-      cannedResponse.createdBy?.includes(lowerSearchText) ||
-      cannedResponse.text.includes(lowerSearchText) ||
-      cannedResponse.tags.some((tag) => tag.includes(lowerSearchText)),
+      (!cannedResponse.isPrivate && cannedResponse.createdBy?.toLowerCase().includes(lowerSearchText)) ||
+      cannedResponse.text.toLowerCase().includes(lowerSearchText) ||
+      cannedResponse.tags.some((tag) => tag.toLowerCase().includes(lowerSearchText)),
   );
 };
 
