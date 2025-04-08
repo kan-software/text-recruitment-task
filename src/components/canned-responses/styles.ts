@@ -154,28 +154,32 @@ export const tags = css`
     padding: 0;
 
     li {
-      position: relative;
+      list-style-type: none;
       display: inline-block;
       width: auto;
       max-width: 100%;
-      overflow-wrap: break-word;
-      padding: 5px 8px;
       margin: 0 8px 8px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(${DesignToken.ContentDefault});
-      line-height: 22px;
-      border: 1px solid var(${DesignToken.BorderSubtle});
-      border-radius: 4px;
-      text-shadow: none;
 
-      &:before {
-        content: '#';
+      button {
+        position: relative;
+        overflow-wrap: break-word;
+        padding: 5px 8px;
         font-size: 14px;
-        line-height: 22px;
         font-weight: 600;
-        color: var(${DesignToken.ColorActionDefault});
-        margin-right: 4px;
+        color: var(${DesignToken.ContentDefault});
+        line-height: 22px;
+        border: 1px solid var(${DesignToken.BorderSubtle});
+        border-radius: 4px;
+        text-shadow: none;
+
+        &:before {
+          content: '#';
+          font-size: 14px;
+          line-height: 22px;
+          font-weight: 600;
+          color: var(${DesignToken.ColorActionDefault});
+          margin-right: 4px;
+        }
       }
     }
   }

@@ -45,7 +45,7 @@ export const CannedResponses: FC = () => {
         {!isEmpty && (
           <>
             {cannedResponses.map((item) => (
-              <CannedResponseItem key={item.id} item={item} />
+              <CannedResponseItem key={item.id} item={item} onSelectTag={setSearch} />
             ))}
           </>
         )}

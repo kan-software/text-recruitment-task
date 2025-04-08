@@ -13,9 +13,10 @@ import { AgentAvatar } from '../avatar/AgentAvatar';
 import * as styles from './styles';
 interface Props {
   item: CannedResponse;
+  onSelectTag: (tag: string) => void;
 }
 
-export const CannedResponseItem: FC<Props> = ({ item }) => {
+export const CannedResponseItem: FC<Props> = ({ item, onSelectTag }) => {
   const {
     authorName,
     avatarUrl,
@@ -46,12 +47,14 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
         <div className={styles.tags}>
           <ul>
             {item.tags.map((tag) => (
-              <li
-                className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
-                key={tag}
-                data-testid={tag}
-              >
-                {tag}
+              <li key={tag}>
+                <button
+                  className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
+                  data-testid={tag}
+                  onClick={() => onSelectTag(tag)}
+                >
+                  {tag}
+                </button>
               </li>
             ))}
           </ul>
