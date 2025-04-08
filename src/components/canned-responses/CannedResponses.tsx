@@ -13,39 +13,32 @@ export const CannedResponses: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {!isEmpty && (
-        <>
-          <div className={styles.actionBar}>
-            <div className={styles.barContainer}>
-              <>
-                <div className={styles.segmentedControllButtonTopSpace}></div>
-                <SegmentedControl
-                  initialId="all"
-                  currentId={filter}
-                  className={styles.segmentedControlButton}
-                  buttons={cannedResponsesButtons}
-                  onButtonClick={(id) => setFilter(id as CannedResponseFilterType)}
-                />
-              </>
-            </div>
-            <SearchInput onChange={setSearch} value={search} className={styles.searchBar} />
-          </div>
-        </>
-      )}
+      <div className={styles.actionBar}>
+        <div className={styles.barContainer}>
+          <>
+            <div className={styles.segmentedControllButtonTopSpace}></div>
+            <SegmentedControl
+              initialId="all"
+              currentId={filter}
+              className={styles.segmentedControlButton}
+              buttons={cannedResponsesButtons}
+              onButtonClick={(id) => setFilter(id as CannedResponseFilterType)}
+            />
+          </>
+        </div>
+        <SearchInput onChange={setSearch} value={search} className={styles.searchBar} />
+      </div>
 
       <div className={styles.list}>
-        {isEmpty && (
+        {isEmpty ? (
           <EmptyState
             icon={true}
             title="No canned responses"
             description="Save frequently used responses under a simple shortcut"
             className={styles.emptyState}
           />
-        )}
-
-        {!isEmpty && (
+        ) : (
           <Virtuoso
-            style={{ height: styles.VIRTUOSO_LIST_HEIGHT }}
             totalCount={cannedResponses.length}
             itemContent={(index) => (
               <CannedResponseItem item={cannedResponses[index]} search={search} onSelectTag={setSearch} />

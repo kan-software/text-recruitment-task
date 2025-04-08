@@ -26,22 +26,25 @@ export const useCannedResponses = (): UseCannedResponses => {
   const [filter, setFilter] = useState<CannedResponseFilterType>('all');
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search);
-  const cannedResponses = useSelector(getCannedResponses);
-  const isEmpty = cannedResponses.length === 0;
+  const cannedResponsesKeyMap = useSelector(getCannedResponses);
 
   const searchedResponsesByFilter = useMemo(() => {
+    const cannedResponses = Object.values(cannedResponsesKeyMap);
     const sortedResponses = sortCannedResponses(cannedResponses);
     const searchedResponses = searchCannedResponses(sortedResponses, debouncedSearch);
     return groupCannedResponsesByFilterType(searchedResponses);
-  }, [cannedResponses, debouncedSearch]);
+  }, [cannedResponsesKeyMap, debouncedSearch]);
 
   const cannedResponsesButtons = useMemo(
     () => getCannedResponsesButtons(searchedResponsesByFilter),
     [searchedResponsesByFilter],
   );
 
+  const cannedResponses = searchedResponsesByFilter[filter];
+  const isEmpty = cannedResponses.length === 0;
+
   return {
-    cannedResponses: searchedResponsesByFilter[filter],
+    cannedResponses,
     cannedResponsesButtons,
     isEmpty,
     filter,

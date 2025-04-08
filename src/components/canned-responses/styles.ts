@@ -215,7 +215,7 @@ export const wrapper = css`
 export const list = css`
   margin-top: ${toPx(VirtuosoViewportOffsets.ListMarginTop)};
   position: relative;
-  height: 100%;
+  height: ${VIRTUOSO_LIST_HEIGHT};
   min-height: 400px;
   max-width: ${maxWidth};
 `;

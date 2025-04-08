@@ -20,6 +20,6 @@ export interface WithCannedResponsesState {
   };
 }
 
-export function getCannedResponses(state: WithCannedResponsesState): CannedResponse[] {
-  return Object.values(state.entities.cannedResponses.byIds);
+export function getCannedResponses(state: WithCannedResponsesState): KeyMap<CannedResponse> {
+  return state.entities.cannedResponses.byIds;
 }
