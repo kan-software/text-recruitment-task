@@ -9,13 +9,16 @@ import { CannedResponse } from '../../types/canned-responses';
 import { iconButton } from './styles';
 import { FakeLink } from '../fake-link/FakeLink';
 import { AgentAvatar } from '../avatar/AgentAvatar';
-
+import { TextHighlight } from '../text-highlight/TextHighlight';
 import * as styles from './styles';
+
 interface Props {
   item: CannedResponse;
+  search: string;
+  onSelectTag: (tag: string) => void;
 }
 
-export const CannedResponseItem: FC<Props> = ({ item }) => {
+export const CannedResponseItem: FC<Props> = ({ item, search, onSelectTag }) => {
   const {
     authorName,
     avatarUrl,
@@ -36,7 +39,8 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
     </div>
   ) : (
     <div className={styles.modifiedText}>
-      <AgentAvatar src={avatarUrl} size="xxsmall" className={styles.avatar} /> {lastAction} by {authorName}, {lastDate}
+      <AgentAvatar src={avatarUrl} size="xxsmall" className={styles.avatar} /> {lastAction} by{' '}
+      {<TextHighlight highlight={search}>{authorName}</TextHighlight>}, {lastDate}
     </div>
   );
 
@@ -46,12 +50,14 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
         <div className={styles.tags}>
           <ul>
             {item.tags.map((tag) => (
-              <li
-                className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
-                key={tag}
-                data-testid={tag}
-              >
-                {tag}
+              <li key={tag}>
+                <button
+                  className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
+                  data-testid={tag}
+                  onClick={() => onSelectTag(tag)}
+                >
+                  <TextHighlight highlight={search}>{tag}</TextHighlight>
+                </button>
               </li>
             ))}
           </ul>
@@ -96,7 +102,7 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
       </div>
 
       <div data-testid="canned-message" className={cx({ [styles.content]: false })}>
-        {content}
+        <TextHighlight highlight={search}>{content}</TextHighlight>
       </div>
 
       <div className={styles.footer}>

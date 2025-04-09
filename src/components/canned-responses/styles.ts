@@ -2,6 +2,15 @@ import { css, keyframes } from '@emotion/css';
 import { DesignToken } from '@livechat/design-system-react-components';
 
 const maxWidth = '100%';
+const toPx = (value: number): string => `${value}px`;
+
+const VirtuosoViewportOffsets = {
+  ActionBarHeight: 64,
+  ActionBarMarginTop: 32,
+  ListMarginTop: 16,
+} as const;
+
+export const VIRTUOSO_LIST_HEIGHT = `calc(100vh - ${toPx(Object.values(VirtuosoViewportOffsets).reduce((a, b) => a + b, 0))})`;
 
 const highlight = keyframes`
   from {
@@ -24,7 +33,8 @@ export const actionBar = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
+  margin-top: ${toPx(VirtuosoViewportOffsets.ActionBarMarginTop)};
+  height: ${toPx(VirtuosoViewportOffsets.ActionBarHeight)};
   max-width: ${maxWidth};
 
   .lc-search-bar__container {
@@ -154,28 +164,32 @@ export const tags = css`
     padding: 0;
 
     li {
-      position: relative;
+      list-style-type: none;
       display: inline-block;
       width: auto;
       max-width: 100%;
-      overflow-wrap: break-word;
-      padding: 5px 8px;
       margin: 0 8px 8px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(${DesignToken.ContentDefault});
-      line-height: 22px;
-      border: 1px solid var(${DesignToken.BorderSubtle});
-      border-radius: 4px;
-      text-shadow: none;
 
-      &:before {
-        content: '#';
+      button {
+        position: relative;
+        overflow-wrap: break-word;
+        padding: 5px 8px;
         font-size: 14px;
-        line-height: 22px;
         font-weight: 600;
-        color: var(${DesignToken.ColorActionDefault});
-        margin-right: 4px;
+        color: var(${DesignToken.ContentDefault});
+        line-height: 22px;
+        border: 1px solid var(${DesignToken.BorderSubtle});
+        border-radius: 4px;
+        text-shadow: none;
+
+        &:before {
+          content: '#';
+          font-size: 14px;
+          line-height: 22px;
+          font-weight: 600;
+          color: var(${DesignToken.ColorActionDefault});
+          margin-right: 4px;
+        }
       }
     }
   }
@@ -199,9 +213,9 @@ export const wrapper = css`
 `;
 
 export const list = css`
-  margin-top: 16px;
+  margin-top: ${toPx(VirtuosoViewportOffsets.ListMarginTop)};
   position: relative;
-  height: 100%;
+  height: ${VIRTUOSO_LIST_HEIGHT};
   min-height: 400px;
   max-width: ${maxWidth};
 `;
