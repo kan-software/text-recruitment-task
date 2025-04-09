@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import type { CannedResponseFilterType } from '../types/filter-type';
 import { CannedResponse } from '../types/canned-responses';
 import { getCannedResponses } from '../store/selectors';
-import { useDebounce } from './use-debounce';
 import {
   groupCannedResponsesByFilterType,
   searchCannedResponses,
@@ -11,21 +10,23 @@ import {
 } from './helpers/canned-responses-utils';
 import { SegmentedControlProps } from '@livechat/design-system-react-components';
 import { getCannedResponsesButtons } from './helpers/canned-responses-buttons-utils';
+import { useDebounce } from './use-debounce';
 
 interface UseCannedResponses {
   cannedResponses: CannedResponse[];
   isEmpty: boolean;
   filter: CannedResponseFilterType;
-  search: string;
+  inputSearch: string;
   cannedResponsesButtons: SegmentedControlProps['buttons'];
   setFilter: Dispatch<SetStateAction<CannedResponseFilterType>>;
-  setSearch: Dispatch<SetStateAction<string>>;
+  setInputSearch: Dispatch<SetStateAction<string>>;
+  setTag: (value: string) => void;
 }
 
 export const useCannedResponses = (): UseCannedResponses => {
   const [filter, setFilter] = useState<CannedResponseFilterType>('all');
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search);
+  const [inputSearch, setInputSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useDebounce(inputSearch);
   const cannedResponsesKeyMap = useSelector(getCannedResponses);
 
   const searchedResponsesByFilter = useMemo(() => {
@@ -43,13 +44,19 @@ export const useCannedResponses = (): UseCannedResponses => {
   const cannedResponses = searchedResponsesByFilter[filter];
   const isEmpty = cannedResponses.length === 0;
 
+  const setTag = (value: string) => {
+    setInputSearch(value);
+    setDebouncedSearch(value);
+  };
+
   return {
     cannedResponses,
     cannedResponsesButtons,
     isEmpty,
     filter,
-    search,
+    inputSearch,
     setFilter,
-    setSearch,
+    setInputSearch,
+    setTag,
   };
 };

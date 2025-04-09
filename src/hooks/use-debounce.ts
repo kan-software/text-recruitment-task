@@ -11,5 +11,5 @@ export function useDebounce(value: string, delay = 300) {
     return () => clearTimeout(timeout);
   }, [value, delay]);
 
-  return debouncedValue;
+  return [debouncedValue, setDebouncedValue] as const;
 }

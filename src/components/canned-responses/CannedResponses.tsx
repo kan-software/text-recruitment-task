@@ -8,7 +8,7 @@ import { useCannedResponses } from '../../hooks/use-canned-responses';
 import * as styles from './styles';
 
 export const CannedResponses: FC = () => {
-  const { cannedResponses, isEmpty, filter, search, cannedResponsesButtons, setFilter, setSearch } =
+  const { cannedResponses, isEmpty, filter, inputSearch, cannedResponsesButtons, setFilter, setInputSearch, setTag } =
     useCannedResponses();
 
   return (
@@ -26,7 +26,7 @@ export const CannedResponses: FC = () => {
             />
           </>
         </div>
-        <SearchInput onChange={setSearch} value={search} className={styles.searchBar} />
+        <SearchInput value={inputSearch} className={styles.searchBar} onChange={setInputSearch} />
       </div>
 
       <div className={styles.list}>
@@ -41,7 +41,7 @@ export const CannedResponses: FC = () => {
           <Virtuoso
             totalCount={cannedResponses.length}
             itemContent={(index) => (
-              <CannedResponseItem item={cannedResponses[index]} search={search} onSelectTag={setSearch} />
+              <CannedResponseItem item={cannedResponses[index]} search={inputSearch} onSelectTag={setTag} />
             )}
           />
         )}
